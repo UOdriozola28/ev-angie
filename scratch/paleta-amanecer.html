@@ -1,0 +1,238 @@
+<style>
+  :root{
+    --ink:#18101a;
+    --ink-soft:#241a28;
+    --paper:#f6efe9;
+    --paper-dim:#cfc3ba;
+    --line:rgba(246,239,233,.12);
+    --accent:#ff8a5c;
+  }
+  :root[data-theme="light"]{
+    --ink:#faf5f0;
+    --ink-soft:#f0e6dd;
+    --paper:#241a1f;
+    --paper-dim:#5c4a4a;
+    --line:rgba(36,26,31,.12);
+    --accent:#e0567d;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --ink:#faf5f0;
+      --ink-soft:#f0e6dd;
+      --paper:#241a1f;
+      --paper-dim:#5c4a4a;
+      --line:rgba(36,26,31,.12);
+      --accent:#e0567d;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0}
+  .pagina{
+    background:var(--ink);
+    color:var(--paper);
+    min-height:100vh;
+    font-family:Georgia,'Times New Roman',serif;
+    padding:48px 24px 80px;
+  }
+  .cabecera{max-width:760px;margin:0 auto 44px;text-align:center}
+  .eyebrow{
+    font-family:-apple-system,'Segoe UI',sans-serif;
+    font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--paper-dim);margin-bottom:14px;
+  }
+  h1{
+    font-style:italic;font-weight:400;
+    font-size:clamp(1.7rem,4.5vw,2.6rem);
+    line-height:1.25;margin:0 0 14px;
+    text-wrap:balance;
+  }
+  .cabecera p{
+    font-family:-apple-system,'Segoe UI',sans-serif;
+    font-size:.98rem;color:var(--paper-dim);
+    max-width:480px;margin:0 auto;line-height:1.55;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:28px;max-width:900px;margin:0 auto;
+  }
+  .tarjeta{
+    border:1px solid var(--line);
+    border-radius:18px;
+    overflow:hidden;
+    background:var(--ink-soft);
+  }
+  .rotulo{
+    font-family:-apple-system,'Segoe UI',sans-serif;
+    padding:16px 18px 12px;
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  }
+  .rotulo b{font-size:.95rem;font-weight:600}
+  .rotulo span{font-size:.72rem;color:var(--paper-dim)}
+
+  /* ---- escena mini (mockup del paso 1) ---- */
+  .escena{
+    position:relative;
+    height:280px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:14px;padding:16px;text-align:center;overflow:hidden;
+  }
+  .escena .titulo-mini{font-style:italic;font-size:1.15rem;line-height:1.2}
+  .escena .sub-mini{
+    font-family:-apple-system,'Segoe UI',sans-serif;
+    font-size:.72rem;opacity:.85;max-width:200px;
+  }
+  .escena .btn-mini{
+    font-family:-apple-system,'Segoe UI',sans-serif;
+    font-weight:700;font-size:.78rem;border:none;border-radius:999px;
+    padding:9px 20px;
+  }
+  .sobre-mini{position:relative;width:96px;height:66px}
+  .sobre-mini .cuerpo{position:absolute;inset:0;border-radius:6px}
+  .sobre-mini .solapa{
+    position:absolute;top:0;left:0;width:0;height:0;
+    border-left:48px solid transparent;border-right:48px solid transparent;
+    border-top:36px solid;
+  }
+  .sobre-mini .sello{
+    position:absolute;top:26px;left:50%;transform:translateX(-50%);
+    width:22px;height:22px;border-radius:50%;
+  }
+  .corazon{position:absolute;font-size:13px;opacity:.7}
+
+  /* ---- paletas ---- */
+  .p1 .escena{background:linear-gradient(160deg,#ffd9a0 0%,#ffb26b 45%,#ff7b54 100%);color:#4a1f2b}
+  .p1 .sobre-mini .cuerpo{background:linear-gradient(160deg,#fff3e6,#ffe3cf)}
+  .p1 .sobre-mini .solapa{border-top-color:#ffcf9e}
+  .p1 .sobre-mini .sello{background:#c4436a}
+  .p1 .btn-mini{background:#c4436a;color:#fff}
+  .p1 .sub-mini{color:#5c2a3a}
+
+  .p2 .escena{background:linear-gradient(180deg,#3a1f12 0%,#a8542c 55%,#ff9d5c 100%);color:#fff3e6}
+  .p2 .sobre-mini .cuerpo{background:linear-gradient(160deg,#3f2a20,#573823)}
+  .p2 .sobre-mini .solapa{border-top-color:#6b4527}
+  .p2 .sobre-mini .sello{background:radial-gradient(circle at 35% 30%,#ff8fb6,#ff4f8b 70%)}
+  .p2 .btn-mini{background:linear-gradient(135deg,#ff9d5c,#ffc98f);color:#3a1f12}
+  .p2 .sub-mini{color:#f0c9a6}
+
+  .p3 .escena{background:linear-gradient(160deg,#fff3e0 0%,#ffcba4 55%,#e07856 100%);color:#5a2e2b}
+  .p3 .sobre-mini .cuerpo{background:linear-gradient(160deg,#fffaf4,#fbe6d3)}
+  .p3 .sobre-mini .solapa{border-top-color:#f0d2b5}
+  .p3 .sobre-mini .sello{background:#c85f4a}
+  .p3 .btn-mini{background:#c85f4a;color:#fff3e6}
+  .p3 .sub-mini{color:#7a4136}
+
+  .p4 .escena{background:linear-gradient(135deg,#ff7b54 0%,#e0567d 55%,#ff6b9d 100%);color:#3a1220}
+  .p4 .sobre-mini .cuerpo{background:linear-gradient(160deg,#fff0e8,#ffd9e5)}
+  .p4 .sobre-mini .solapa{border-top-color:#ffc2d6}
+  .p4 .sobre-mini .sello{background:radial-gradient(circle at 35% 30%,#ffab7a,#e0447d 70%)}
+  .p4 .btn-mini{background:linear-gradient(135deg,#ff8a5c,#ff6b9d);color:#fff}
+  .p4 .sub-mini{color:#5c1a30}
+
+  .p5 .escena{background:linear-gradient(160deg,#ffb100 0%,#ff6b35 45%,#ff3d54 100%);color:#4a0f24}
+  .p5 .sobre-mini .cuerpo{background:linear-gradient(160deg,#fff0dd,#ffd8c2)}
+  .p5 .sobre-mini .solapa{border-top-color:#ffb98f}
+  .p5 .sobre-mini .sello{background:#7a1f3d}
+  .p5 .btn-mini{background:#7a1f3d;color:#fff3e6}
+  .p5 .sub-mini{color:#6b1a34}
+
+  .chips{
+    display:flex;flex-wrap:wrap;gap:8px;
+    padding:14px 18px 18px;
+    font-family:-apple-system,'Segoe UI',sans-serif;
+  }
+  .chip{
+    display:flex;align-items:center;gap:6px;
+    font-size:.68rem;color:var(--paper-dim);
+    border:1px solid var(--line);border-radius:999px;
+    padding:4px 10px 4px 6px;
+  }
+  .chip i{width:14px;height:14px;border-radius:50%;display:inline-block}
+
+  @media (prefers-reduced-motion: no-preference){
+    .tarjeta{transition:transform .2s ease}
+    .tarjeta:hover{transform:translateY(-3px)}
+  }
+</style>
+
+<div class="pagina">
+  <div class="cabecera">
+    <div class="eyebrow">Vista previa de paleta · sorpresa-para-ti</div>
+    <h1>Cuatro formas de mezclar amanecer con amor</h1>
+    <p>Cada tarjeta simula el Paso 1 (el sobre) con esa paleta aplicada. Mismo layout, mismos elementos — solo cambian los colores.</p>
+  </div>
+
+  <div class="grid">
+    <div class="tarjeta p1">
+      <div class="rotulo"><b>1 · Amanecer clásico</b><span>naranja → rosa pálido</span></div>
+      <div class="escena">
+        <div class="corazon" style="top:14px;left:18%">💗</div>
+        <div class="corazon" style="top:30px;right:14%;font-size:11px">✨</div>
+        <div class="sobre-mini"><div class="solapa"></div><div class="sello">💗</div><div class="cuerpo"></div></div>
+        <div class="titulo-mini">Alguien te mandó algo…</div>
+        <div class="sub-mini">Y no, no es spam. Es amor certificado.</div>
+        <button class="btn-mini">Abrir ✨</button>
+      </div>
+      <div class="chips">
+        <span class="chip"><i style="background:#ff7b54"></i>#ff7b54</span>
+        <span class="chip"><i style="background:#ffb26b"></i>#ffb26b</span>
+        <span class="chip"><i style="background:#ffd9a0"></i>#ffd9a0</span>
+        <span class="chip"><i style="background:#c4436a"></i>#c4436a</span>
+      </div>
+    </div>
+
+    <div class="tarjeta p2">
+      <div class="rotulo"><b>2 · Golden hour</b><span>ámbar oscuro → luz dorada</span></div>
+      <div class="escena">
+        <div class="corazon" style="top:14px;left:16%">💘</div>
+        <div class="corazon" style="top:34px;right:16%;font-size:11px">🩷</div>
+        <div class="sobre-mini"><div class="solapa"></div><div class="sello"></div><div class="cuerpo"></div></div>
+        <div class="titulo-mini">Alguien te mandó algo…</div>
+        <div class="sub-mini">Y no, no es spam. Es amor certificado.</div>
+        <button class="btn-mini">Abrir ✨</button>
+      </div>
+      <div class="chips">
+        <span class="chip"><i style="background:#3a1f12"></i>#3a1f12</span>
+        <span class="chip"><i style="background:#a8542c"></i>#a8542c</span>
+        <span class="chip"><i style="background:#ff9d5c"></i>#ff9d5c</span>
+        <span class="chip"><i style="background:#ff4f8b"></i>#ff4f8b</span>
+      </div>
+    </div>
+
+    <div class="tarjeta p3">
+      <div class="rotulo"><b>3 · Durazno + terracota</b><span>tierra cálida, más maduro</span></div>
+      <div class="escena">
+        <div class="corazon" style="top:14px;left:18%">🤎</div>
+        <div class="corazon" style="top:30px;right:14%;font-size:11px">🧡</div>
+        <div class="sobre-mini"><div class="solapa"></div><div class="sello">💗</div><div class="cuerpo"></div></div>
+        <div class="titulo-mini">Alguien te mandó algo…</div>
+        <div class="sub-mini">Y no, no es spam. Es amor certificado.</div>
+        <button class="btn-mini">Abrir ✨</button>
+      </div>
+      <div class="chips">
+        <span class="chip"><i style="background:#e07856"></i>#e07856</span>
+        <span class="chip"><i style="background:#ffcba4"></i>#ffcba4</span>
+        <span class="chip"><i style="background:#fff3e0"></i>#fff3e0</span>
+        <span class="chip"><i style="background:#c85f4a"></i>#c85f4a</span>
+      </div>
+    </div>
+
+    <div class="tarjeta p4">
+      <div class="rotulo"><b>4 · Dual-tone</b><span>naranja y rosa conviven</span></div>
+      <div class="escena">
+        <div class="corazon" style="top:14px;left:16%">💗</div>
+        <div class="corazon" style="top:34px;right:16%;font-size:11px">🧡</div>
+        <div class="sobre-mini"><div class="solapa"></div><div class="sello">💗</div><div class="cuerpo"></div></div>
+        <div class="titulo-mini">Alguien te mandó algo…</div>
+        <div class="sub-mini">Y no, no es spam. Es amor certificado.</div>
+        <button class="btn-mini">Abrir ✨</button>
+      </div>
+      <div class="chips">
+        <span class="chip"><i style="background:#ff7b54"></i>#ff7b54</span>
+        <span class="chip"><i style="background:#e0567d"></i>#e0567d</span>
+        <span class="chip"><i style="background:#ff6b9d"></i>#ff6b9d</span>
+      </div>
+    </div>
+  </div>
+</div>

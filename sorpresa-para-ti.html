@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Una sorpresa para ti 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Quicksand:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --noche: #2a0f1e;
+      --noche2: #5c2233;
+      --rosa: #ff5d7a;
+      --rosa-hondo: #c81d4a;
+      --oro: #ff6b35;
+      --dorado: #ffb100;
+      --crema: #fff3e6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(180deg, var(--noche) 0%, var(--noche2) 55%, var(--oro) 100%);
+      color: var(--crema);
+      overflow-x: hidden;
+      min-height: 100dvh;
+    }
+
+    .display {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic
+    }
+
+    /* ambient floating hearts */
+    .amb {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0
+    }
+
+    .amb span {
+      position: absolute;
+      bottom: -6vh;
+      font-size: 16px;
+      opacity: 0;
+      animation: flotar linear infinite
+    }
+
+    @keyframes flotar {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0
+      }
+
+      10% {
+        opacity: .5
+      }
+
+      90% {
+        opacity: .35
+      }
+
+      100% {
+        transform: translateY(-110vh) rotate(40deg);
+        opacity: 0
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .amb span {
+        animation: none;
+        display: none
+      }
+
+      * {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important
+      }
+    }
+
+    .paso {
+      position: relative;
+      z-index: 1;
+      min-height: 100dvh;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 22px 40px;
+      text-align: center;
+    }
+
+    .paso.activo {
+      display: flex;
+      animation: aparece .6s ease both
+    }
+
+    @keyframes aparece {
+      from {
+        opacity: 0;
+        transform: translateY(14px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .dots {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 5
+    }
+
+    .dots i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 243, 230, .22);
+      transition: .3s
+    }
+
+    .dots i.on {
+      background: var(--oro);
+      box-shadow: 0 0 10px rgba(255, 107, 53, .7)
+    }
+
+    h1 {
+      font-size: clamp(2rem, 8.5vw, 3rem);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 10px
+    }
+
+    .sub {
+      color: rgba(255, 243, 230, .75);
+      font-size: 1rem;
+      max-width: 320px;
+      margin: 0 auto 26px
+    }
+
+    .btn {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--noche);
+      background: linear-gradient(135deg, var(--oro), var(--dorado));
+      border: none;
+      border-radius: 999px;
+      padding: 15px 34px;
+      cursor: pointer;
+      box-shadow: 0 6px 22px rgba(255, 107, 53, .4);
+      transition: transform .15s;
+    }
+
+    .btn:active {
+      transform: scale(.95)
+    }
+
+    .btn.rosa {
+      background: linear-gradient(135deg, var(--rosa), #ff8fb6);
+      color: #fff;
+      box-shadow: 0 6px 22px rgba(255, 107, 157, .4)
+    }
+
+    .btn:focus-visible {
+      outline: 3px solid var(--oro);
+      outline-offset: 3px
+    }
+
+    /* ---------- PASO 1: sobre ---------- */
+    .sobre {
+      position: relative;
+      width: 230px;
+      height: 160px;
+      margin: 30px auto 34px;
+      cursor: pointer;
+      transition: transform .2s
+    }
+
+    .sobre:active {
+      transform: scale(.96)
+    }
+
+    .sobre .cuerpo {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #fff3e6, #ffdcc2);
+      border-radius: 10px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .45)
+    }
+
+    .sobre .solapa {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      z-index: 3;
+      border-left: 115px solid transparent;
+      border-right: 115px solid transparent;
+      border-top: 88px solid #f0c39e;
+      transform-origin: top;
+      transition: transform .8s cubic-bezier(.6, -0.3, .3, 1.2);
+    }
+
+    .sobre .carta {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 12px;
+      bottom: 12px;
+      z-index: 1;
+      background: var(--crema);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--rosa-hondo);
+      font-size: 2rem;
+      transition: transform .8s .35s;
+    }
+
+    .sobre .sello {
+      position: absolute;
+      top: 64px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ff8fb6, var(--rosa-hondo) 70%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .4), inset 0 0 0 4px rgba(255, 255, 255, .15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: transform .5s, opacity .5s;
+    }
+
+    .sobre.abierto .sello {
+      transform: translateX(-50%) scale(0) rotate(180deg);
+      opacity: 0
+    }
+
+    .sobre.abierto .solapa {
+      transform: rotateX(180deg);
+      border-top-color: #e0a97a;
+      z-index: 0
+    }
+
+    .sobre.abierto .carta {
+      transform: translateY(-58px) scale(1.06)
+    }
+
+    .pista {
+      color: rgba(255, 243, 230, .55);
+      font-size: .85rem;
+      letter-spacing: .06em;
+      text-transform: uppercase
+    }
+
+    /* ---------- PASO 2: cartas volteables ---------- */
+    .grid-cartas {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 340px;
+      margin: 8px auto 26px
+    }
+
+    .flip {
+      perspective: 900px;
+      height: 120px;
+      cursor: pointer
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform .7s cubic-bezier(.4, .1, .2, 1)
+    }
+
+    .flip.girada .flip-inner {
+      transform: rotateY(180deg)
+    }
+
+    .cara {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .cara.frente {
+      background: linear-gradient(150deg, rgba(255, 138, 92, .2), rgba(255, 107, 53, .06));
+      border: 1px solid rgba(255, 138, 92, .4);
+      font-size: 2rem;
+    }
+
+    .cara.frente small {
+      position: absolute;
+      bottom: 10px;
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255, 243, 230, .5)
+    }
+
+    .cara.atras {
+      background: linear-gradient(150deg, #fff3e6, #ffdcc7);
+      color: #5a2144;
+      transform: rotateY(180deg);
+      font-weight: 500;
+      font-size: .98rem;
+      line-height: 1.45;
+    }
+
+    .cara.atras .display {
+      font-size: 1.05rem;
+      font-weight: 600
+    }
+
+    /* ---------- PASO 3: ¿me quieres? ---------- */
+    .zona-juego {
+      position: relative;
+      width: 100%;
+      max-width: 360px;
+      height: 200px;
+      margin: 10px auto 0
+    }
+
+    #btnSi {
+      position: absolute;
+      left: 18%;
+      top: 60px
+    }
+
+    #btnNo {
+      position: absolute;
+      right: 18%;
+      top: 60px;
+      background: rgba(255, 243, 230, .12);
+      color: var(--crema);
+      border: 1px solid rgba(255, 243, 230, .3);
+      border-radius: 999px;
+      padding: 15px 34px;
+      font-family: 'Quicksand';
+      font-weight: 700;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: left .18s ease, top .18s ease;
+    }
+
+    .contador-no {
+      margin-top: 6px;
+      min-height: 24px;
+      color: var(--oro);
+      font-size: .9rem;
+      font-weight: 500
+    }
+
+    /* ---------- PASO 4: rasca y gana ---------- */
+    .rasca-wrap {
+      position: relative;
+      width: 300px;
+      height: 170px;
+      margin: 14px auto 24px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, .45)
+    }
+
+    .premio {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(140deg, #fff3e6, #ffd9c2);
+      color: #5a2144;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 16px;
+    }
+
+    .premio .display {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--rosa-hondo)
+    }
+
+    .premio p {
+      font-size: .9rem;
+      font-weight: 500
+    }
+
+    #lienzo {
+      position: absolute;
+      inset: 0;
+      touch-action: none;
+      cursor: crosshair
+    }
+
+    /* ---------- PASO 5: final + cupones ---------- */
+    .cupones {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 340px;
+      margin: 20px auto 28px
+    }
+
+    .cupon {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+      background: rgba(255, 243, 230, .07);
+      border: 1px dashed rgba(255, 107, 53, .5);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .cupon b {
+      display: block;
+      color: var(--oro);
+      font-size: .95rem
+    }
+
+    .cupon span {
+      font-size: .85rem;
+      color: rgba(255, 243, 230, .75)
+    }
+
+    .cupon .emo {
+      font-size: 1.6rem
+    }
+
+    .firma {
+      color: rgba(255, 243, 230, .6);
+      font-size: .9rem;
+      margin-top: 6px
+    }
+
+    .firma .display {
+      color: var(--oro);
+      font-size: 1.2rem
+    }
+
+    /* corazones explosión */
+    .boom {
+      position: fixed;
+      font-size: 22px;
+      z-index: 50;
+      pointer-events: none;
+      animation: boom 1.3s ease-out forwards
+    }
+
+    @keyframes boom {
+      0% {
+        transform: translate(0, 0) scale(.6);
+        opacity: 1
+      }
+
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(1.3);
+        opacity: 0
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="amb" id="amb"></div>
+
+  <div class="dots" id="dots">
+    <i class="on"></i><i></i><i></i><i></i><i></i>
+  </div>
+
+  <!-- PASO 1: SOBRE -->
+  <section class="paso activo" id="p1">
+    <h1 class="display">Angie, alguien te mandó algo…</h1>
+    <p class="sub">Y no, no es spam. Es 100% amor certificado.</p>
+    <div class="sobre" id="sobre" role="button" tabindex="0" aria-label="Abrir el sobre">
+      <div class="solapa"></div>
+      <div class="sello">💗</div>
+      <div class="carta">💌</div>
+      <div class="cuerpo"></div>
+    </div>
+    <p class="pista">Toca el sobre para abrirlo</p>
+  </section>
+
+  <!-- PASO 2: CARTAS -->
+  <section class="paso" id="p2">
+    <h1 class="display">Cuatro cosas que quiero decirte</h1>
+    <p class="sub">Voltea cada carta ✨</p>
+    <div class="grid-cartas">
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="cara frente">👀<small>Carta 1 · toca</small></div>
+          <div class="cara atras">Cuando me miras, el mundo se detiene un segundo.</div>
+        </div>
+      </div>
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="cara frente">🐹<small>Carta 2 · toca</small></div>
+          <div class="cara atras">Tus cachetes son mi lugar favorito para dejar un beso.</div>
+        </div>
+      </div>
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="cara frente">😴<small>Carta 3 · toca</small></div>
+          <div class="cara atras">No hay mejor final de día que quedarme dormido abrazándote.</div>
+        </div>
+      </div>
+      <div class="flip" tabindex="0">
+        <div class="flip-inner">
+          <div class="cara frente">🌅<small>Carta 4 · toca</small></div>
+          <div class="cara atras">Eres tan hermosa como el naranja del atardecer.</div>
+        </div>
+      </div>
+    </div>
+    <button class="btn" id="sigue2" style="visibility:hidden">Siguiente →</button>
+  </section>
+
+  <!-- PASO 3: ¿ME QUIERES? -->
+  <section class="paso" id="p3">
+    <h1 class="display">Pregunta seria:<br>¿me quieres?</h1>
+    <p class="sub">Piénsalo bien. O no. 😏</p>
+    <div class="zona-juego" id="zona">
+      <button class="btn rosa" id="btnSi">Sí ❤️</button>
+      <button id="btnNo">No</button>
+    </div>
+    <p class="contador-no" id="msgNo"></p>
+  </section>
+
+  <!-- PASO 4: RASCA Y GANA -->
+  <section class="paso" id="p4">
+    <h1 class="display">Rasca y gana</h1>
+    <p class="sub">Frota con el dedo para descubrir tu premio 🪙</p>
+    <div class="rasca-wrap">
+      <div class="premio">
+        <div class="display">🎁 ¡Premio mayor!</div>
+        <p>Una noche solo nuestra: buena comida, la música que amamos<br>y tiempo para perdernos hablando. </p>
+      </div>
+      <canvas id="lienzo" width="300" height="170"></canvas>
+    </div>
+    <button class="btn" id="sigue4" style="visibility:hidden">Ver mi regalo final →</button>
+  </section>
+
+  <!-- PASO 5: FINAL -->
+  <section class="paso" id="p5">
+    <h1 class="display">Eres el atardecer que elegí quedarme a ver</h1>
+    <p class="sub">Tan hermosa como ese naranja que incendia el cielo antes de irse. Quiero que seas mi princesa para siempre.</p>
+    <button class="btn rosa" id="btnBoom">Te quiero ❤️</button>
+    <p class="firma">Escrito con la calma de un atardecer y las ganas de quedarme viéndote siempre, incluso en medio de tus días en Yuuki.<br><span
+        class="display">— Tu persona favorita 💘</span></p>
+  </section>
+
+  <script>
+    // ------- ambiente: corazones flotando -------
+    const amb = document.getElementById('amb');
+    const emojis = ['💗', '💖', '✨', '💘', '🧡'];
+    for (let i = 0; i < 16; i++) {
+      const s = document.createElement('span');
+      s.textContent = emojis[i % emojis.length];
+      s.style.left = Math.random() * 100 + 'vw';
+      s.style.animationDuration = (9 + Math.random() * 10) + 's';
+      s.style.animationDelay = (Math.random() * 12) + 's';
+      s.style.fontSize = (12 + Math.random() * 14) + 'px';
+      amb.appendChild(s);
+    }
+
+    // ------- navegación de pasos -------
+    const dots = [...document.querySelectorAll('#dots i')];
+    let actual = 1;
+    function irA(n) {
+      document.getElementById('p' + actual).classList.remove('activo');
+      document.getElementById('p' + n).classList.add('activo');
+      actual = n;
+      dots.forEach((d, i) => d.classList.toggle('on', i < n));
+      window.scrollTo(0, 0);
+      if (n === 4) iniciarRasca();
+    }
+
+    // ------- explosión de corazones -------
+    function explosion(x, y, cant = 14) {
+      for (let i = 0; i < cant; i++) {
+        const b = document.createElement('div');
+        b.className = 'boom';
+        b.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        b.style.left = x + 'px'; b.style.top = y + 'px';
+        b.style.setProperty('--dx', (Math.random() * 260 - 130) + 'px');
+        b.style.setProperty('--dy', (Math.random() * -260 - 40) + 'px');
+        document.body.appendChild(b);
+        setTimeout(() => b.remove(), 1400);
+      }
+    }
+
+    // ------- paso 1: sobre -------
+    const sobre = document.getElementById('sobre');
+    function abrirSobre() {
+      if (sobre.classList.contains('abierto')) return;
+      sobre.classList.add('abierto');
+      const r = sobre.getBoundingClientRect();
+      explosion(r.left + r.width / 2, r.top + r.height / 2, 16);
+      setTimeout(() => irA(2), 1500);
+    }
+    sobre.addEventListener('click', abrirSobre);
+    sobre.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') abrirSobre() });
+
+    // ------- paso 2: cartas -------
+    const flips = [...document.querySelectorAll('.flip')];
+    let giradas = 0;
+    flips.forEach(f => {
+      const girar = () => {
+        if (f.classList.contains('girada')) return;
+        f.classList.add('girada');
+        if (++giradas === flips.length) {
+          document.getElementById('sigue2').style.visibility = 'visible';
+        }
+      };
+      f.addEventListener('click', girar);
+      f.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); girar() } });
+    });
+    document.getElementById('sigue2').addEventListener('click', () => irA(3));
+
+    // ------- paso 3: botón que huye -------
+    const btnNo = document.getElementById('btnNo');
+    const zona = document.getElementById('zona');
+    const msgNo = document.getElementById('msgNo');
+    const frases = ['¿Segura? 🤨', 'Ese botón no funciona 😌', 'Inténtalo de nuevo jaja', 'Nop. Imposible.', 'El destino dice que sí 💫', 'Ya ríndete y di que sí 😄'];
+    let intentos = 0;
+    function huir() {
+      const zr = zona.getBoundingClientRect();
+      const maxX = zr.width - btnNo.offsetWidth;
+      const maxY = zr.height - btnNo.offsetHeight;
+      btnNo.style.right = 'auto';
+      btnNo.style.left = Math.random() * maxX + 'px';
+      btnNo.style.top = Math.random() * maxY + 'px';
+      msgNo.textContent = frases[Math.min(intentos, frases.length - 1)];
+      intentos++;
+    }
+    btnNo.addEventListener('pointerenter', huir);
+    btnNo.addEventListener('touchstart', e => { e.preventDefault(); huir() }, { passive: false });
+    btnNo.addEventListener('click', huir);
+    document.getElementById('btnSi').addEventListener('click', e => {
+      explosion(e.clientX, e.clientY, 20);
+      setTimeout(() => irA(4), 800);
+    });
+
+    // ------- paso 4: rasca y gana -------
+    let rascaListo = false;
+    function iniciarRasca() {
+      if (rascaListo) return; rascaListo = true;
+      const cv = document.getElementById('lienzo');
+      const ctx = cv.getContext('2d');
+      const g = ctx.createLinearGradient(0, 0, 300, 170);
+      g.addColorStop(0, '#e08a52'); g.addColorStop(.5, '#c96a3f'); g.addColorStop(1, '#a8502f');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, 300, 170);
+      ctx.fillStyle = 'rgba(255,255,255,.85)';
+      ctx.font = '700 16px Quicksand, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('✨ Rasca aquí ✨', 150, 80);
+      ctx.fillText('con tu dedo', 150, 104);
+      ctx.globalCompositeOperation = 'destination-out';
+      let rascando = false;
+      const pos = e => {
+        const r = cv.getBoundingClientRect();
+        const p = e.touches ? e.touches[0] : e;
+        return { x: (p.clientX - r.left) * (cv.width / r.width), y: (p.clientY - r.top) * (cv.height / r.height) };
+      };
+      const raspar = e => {
+        if (!rascando) return;
+        e.preventDefault();
+        const { x, y } = pos(e);
+        ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
+        chequear();
+      };
+      let listo = false;
+      function chequear() {
+        if (listo) return;
+        const data = ctx.getImageData(0, 0, 300, 170).data;
+        let vacios = 0;
+        for (let i = 3; i < data.length; i += 32) { if (data[i] === 0) vacios++ }
+        if (vacios / (data.length / 32) > .45) {
+          listo = true;
+          cv.style.transition = 'opacity .6s'; cv.style.opacity = '0';
+          setTimeout(() => cv.remove(), 650);
+          const r = cv.getBoundingClientRect();
+          explosion(r.left + 150, r.top + 85, 16);
+          document.getElementById('sigue4').style.visibility = 'visible';
+        }
+      }
+      ['mousedown', 'touchstart'].forEach(ev => cv.addEventListener(ev, e => { rascando = true; raspar(e) }, { passive: false }));
+      ['mousemove', 'touchmove'].forEach(ev => cv.addEventListener(ev, raspar, { passive: false }));
+      ['mouseup', 'mouseleave', 'touchend'].forEach(ev => cv.addEventListener(ev, () => rascando = false));
+    }
+    document.getElementById('sigue4').addEventListener('click', () => irA(5));
+
+    // ------- paso 5: final -------
+    document.getElementById('btnBoom').addEventListener('click', e => {
+      explosion(e.clientX, e.clientY, 26);
+    });
+  </script>
+</body>
+
+</html>
